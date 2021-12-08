@@ -1,0 +1,13 @@
+.list-item {
+    width: 50vw;
+    padding: 10px;
+    border: 1px solid red;
+    margin-bottom: 20px;
+    border-radius: 10px;
+  }
+  
+  .list-item-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
