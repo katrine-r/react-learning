@@ -1,9 +1,9 @@
 import React from 'react'
+import './styles.css'
 
-const Button = ({children}) => {
-console.log(children)
+const Button = ({children, ...props}) => {
     return (
-        <button>
+        <button className='btn' {...props} >
             {children}
         </button>
     )

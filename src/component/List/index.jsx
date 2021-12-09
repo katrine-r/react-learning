@@ -1,18 +1,18 @@
 import React from 'react' 
 import ListItem from '../ListItem'
 
-const List = ({title, data, children}) => {
+const List = ({data, removeHandle}) => {
     return (
         <div>
-            {children}
-            <h2>{title}</h2>
             <ul>
                 {data.map((i, index) => (
                 <ListItem 
+                    id={i.id}
                     key={i.id}
                     num={index + 1}
                     title={i.title} 
                     text={i.text} 
+                    removeHandle={removeHandle}
                 />
                 ))}
             </ul>
