@@ -21,7 +21,7 @@ const List = ({data, removeHandle}) => {
                                 key={i.id}
                                 num={index + 1}
                                 title={i.title} 
-                                text={i.text} 
+                                body={i.body} 
                                 removeHandle={removeHandle}
                             />
                         </CSSTransition>

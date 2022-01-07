@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import './App.css';
 import List from './component/List';
 import Button from './component/UI/Button';
@@ -6,6 +6,9 @@ import Input from './component/UI/Input';
 import Form from './component/Form';
 import Modal from './component/Modal';
 import { PostsService } from './api/PostsService';
+import Loader from './component/UI/Loader';
+import { useFetching } from './hooks/useFetching';
+import { getPageCount } from './utils';
 
 function App() {
 
@@ -15,6 +18,22 @@ function App() {
   const [selected, setSelected] = useState('title')
   const [filter, setFilter] = useState('')
   const [isActive, setIsActive] = useState(false)
+  // const [isLoading, setIsLoading] = useState(true)
+  const [limit, setLimit] = useState(10)
+  const [page, setPage] = useState(2)
+  const [totalCount, setTotalCount] = useState(0)
+  const [pageCount, setPageCount] = useState(0)
+  const [fetching, isLoading, error] = useFetching(async () => {
+    const response = await PostsService.getPosts(limit, page)
+    const posts = await response.json()
+    console.log(`posts`, posts)
+    setTotalCount(response.headers.get('x-total-count'))
+    setPageCount(getPageCount(totalCount, limit))
+    setData1(posts)
+  })
+
+  console.log(`totalCount`, totalCount)
+  console.log(`pageCount`, pageCount)
 
   const handleSubmit = ev => {
     ev.preventDefault()
@@ -27,24 +46,41 @@ function App() {
 
   const removeHandle = id => {
     setData1(data1.filter(i => i.id !== id))
-
   }
 
-  const selectData = ev => {
+  const sortedPosts = useMemo(() => {
     console.log('render')
-    setSelected(ev.target.value)
-    setData1([...data1.sort((a, b) => a[selected].localeCompare(b[selected]))])
-    // return [...data1.sort((a, b) => a[selected].localeCompare(b[selected]))]
-  }
+    if (selected) {
+      return [...data1.sort((a, b) => a[selected].localeCompare(b[selected]))]
+    }
+    return data1 
+  }, [selected, data1])
 
-  // const sortedPosts = selectData()
+  const filteredAndSortedPosts = useMemo(() => {
+    return sortedPosts.filter(i => i.title.toLowerCase().includes(filter.toLowerCase()))
+  }, [filter, sortedPosts])
 
-  // const filteredAndSortedPosts = sortedPosts.filter(i => i.title === filter)
+  // const getPosts = async () => {
+  //   const response = await PostsService.getPosts()
+  //   const posts = await response.json()
+  //   console.log(`posts`, posts)
+  //   setData1(posts)
+  // }
 
-  const getPosts = async () => {
-    const posts = await PostsService.getPosts()
-    console.log(`posts`, posts)
-  }
+  useEffect(() => {
+      fetching()
+
+    // fetching()
+
+    // setTimeout(() => {
+      // getPosts()
+      // setIsLoading(false)
+    // }, 1000)
+  }, [])
+
+  // if (isLoading) {
+  //   return <Loader />
+  // }
 
   return (
     <div className="App">
@@ -71,17 +107,20 @@ function App() {
         onChange={ev => setFilter(ev.target.value)}
       />
 
-      <select value={selected} onChange={selectData} >
+      <select value={selected} onChange={ev => setSelected(ev.target.value)} >
+        <option disabled value='' >Сортировка по</option>
         <option value={'title'} >По названию</option>
-        <option value={'text'} >По содержимому</option>
+        <option value={'body'} >По содержимому</option>
       </select>
 
-      { data1?.length 
-      ? <List data={data1} removeHandle={removeHandle} />
-      : <h1 style={{textAlign: 'center', color: '#222'}}>Список пуст</h1>
+      { isLoading
+          ? <div style={{textAlign: 'center'}}><Loader /></div>
+          : data1?.length 
+            ? <List data={filteredAndSortedPosts} removeHandle={removeHandle} />
+            : <h1 style={{textAlign: 'center', color: '#222'}}>Список пуст</h1>
       }
       
-      <Button onClick={getPosts}>Get posts</Button>
+      {/* <Button onClick={getPosts}>Get posts</Button> */}
 
     </div>
   );
