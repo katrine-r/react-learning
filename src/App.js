@@ -8,14 +8,16 @@ import Modal from './component/Modal';
 import { PostsService } from './api/PostsService';
 import Loader from './component/UI/Loader';
 import { useFetching } from './hooks/useFetching';
-import { getPageCount } from './utils';
+import { getPageCount, getPagesArray } from './utils';
+import classNames from 'classnames';
+
 
 function App() {
 
   const [data1, setData1] = useState([])
   const [title, setTitle] = useState('')
   const [text, setText] = useState('')
-  const [selected, setSelected] = useState('title')
+  const [selected, setSelected] = useState('')
   const [filter, setFilter] = useState('')
   const [isActive, setIsActive] = useState(false)
   // const [isLoading, setIsLoading] = useState(true)
@@ -32,8 +34,8 @@ function App() {
     setData1(posts)
   })
 
-  console.log(`totalCount`, totalCount)
-  console.log(`pageCount`, pageCount)
+  // console.log(`totalCount`, totalCount)
+  // console.log(`pageCount`, pageCount)
 
   const handleSubmit = ev => {
     ev.preventDefault()
@@ -76,14 +78,23 @@ function App() {
       // getPosts()
       // setIsLoading(false)
     // }, 1000)
-  }, [])
+  }, [page])
 
   // if (isLoading) {
   //   return <Loader />
   // }
 
+  console.log(`totalCount`, totalCount);
+
+  console.log(`pageCount`, pageCount);
+
+  const pages = getPagesArray(pageCount);
+  // console.log("pages ", pages);
+
   return (
     <div className="App">
+      {console.log("pages ", pages)}
+      {console.log(`pageCount`, pageCount)}
       <Button onClick={() => setIsActive(true)}>Add post</Button>
       <Modal 
         isActive={isActive}
@@ -121,7 +132,17 @@ function App() {
       }
       
       {/* <Button onClick={getPosts}>Get posts</Button> */}
-
+      <ul className="pagination">
+        {pages.map((i) => (
+          <li
+            key={i}
+            className={classNames("pagination-item", { active: page === i })}
+            onClick={() => setPage(i)}
+          >
+            {i}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

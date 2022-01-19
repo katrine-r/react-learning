@@ -5,14 +5,32 @@ ul {
 .item-enter {
   transform: translateX(-50px);
 }
+
 .item-enter-active {
   transform: translateX(0);
   transition: transform 500ms ease-in;
 }
+
 .item-exit {
   transform: translateX(0);
 }
+
 .item-exit-active {
   transform: translateX(50px);
   transition: transform 500ms ease-in;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.pagination-item {
+  padding: 10px;
+  border: 1px solid #eb5757;
+}
+
+.pagination-item.active {
+  color: #fff;
+  background: #eb5757;
 }
