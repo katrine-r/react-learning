@@ -12,7 +12,7 @@ const ListItem = ({ id, num, title, body, removeHandle }) => {
             <span>{id}. {title}</span>
             <span>{body}</span>
           </span>
-          <Button onClick={() => navigate(`/posts/${id}`)} >More</Button>
+          <Button onClick={() => navigate(`/post/${id}`)} >More</Button>
           <Button onClick={() => removeHandle(id)} >remove</Button>
         </li>
     )
