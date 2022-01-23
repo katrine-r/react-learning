@@ -20,27 +20,19 @@ function Posts() {
   const [selected, setSelected] = useState('')
   const [filter, setFilter] = useState('')
   const [isActive, setIsActive] = useState(false)
-  // const [isLoading, setIsLoading] = useState(true)
   const [limit, setLimit] = useState(10)
   const [page, setPage] = useState(2)
-  // const [totalCount, setTotalCount] = useState(0)
-  // const [pageCount, setPageCount] = useState(0)
   const [pages, setPages] = useState([])
 
   const [fetching, isLoading, error] = useFetching(async () => {
     const response = await PostsService.getPosts(limit, page)
     const posts = await response.json()
     console.log(`posts`, posts)
-    // setTotalCount(response.headers.get('x-total-count'))
     const totalCount = response.headers.get("x-total-count")
-    // setPageCount(getPageCount(totalCount, limit))
     const pageCount = getPageCount(totalCount, limit)
     setPages(getPagesArray(pageCount))
     setData1(posts)
   })
-
-  // console.log(`totalCount`, totalCount)
-  // console.log(`pageCount`, pageCount)
 
   const handleSubmit = ev => {
     ev.preventDefault()
@@ -67,39 +59,13 @@ function Posts() {
     return sortedPosts.filter(i => i.title.toLowerCase().includes(filter.toLowerCase()))
   }, [filter, sortedPosts])
 
-  // const getPosts = async () => {
-  //   const response = await PostsService.getPosts()
-  //   const posts = await response.json()
-  //   console.log(`posts`, posts)
-  //   setData1(posts)
-  // }
-
   useEffect(() => {
       fetching()
-
-    // fetching()
-
-    // setTimeout(() => {
-      // getPosts()
-      // setIsLoading(false)
-    // }, 1000)
   }, [page])
-
-  // if (isLoading) {
-  //   return <Loader />
-  // }
-
-  // console.log(`totalCount`, totalCount);
-
-  // console.log(`pageCount`, pageCount);
-
-  // const pages = getPagesArray(pageCount);
-  // console.log("pages ", pages);
 
   return (
     <div className="App">
       {console.log("pages ", pages)}
-      {/* {console.log(`pageCount`, pageCount)} */}
       <Button onClick={() => setIsActive(true)}>Add post</Button>
       <Modal 
         isActive={isActive}
@@ -136,7 +102,6 @@ function Posts() {
             : <h1 style={{textAlign: 'center', color: '#222'}}>Список пуст</h1>
       }
       
-      {/* <Button onClick={getPosts}>Get posts</Button> */}
       <ul className="pagination">
         {pages.map((i) => (
           <li

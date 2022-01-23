@@ -1,7 +1,8 @@
-import { CHANGE_COUNTER } from "../types"
+import { CHANGE_COUNTER, CHANGE_VALUE } from "../types"
 
 const initialState = {
-    counter: 0
+    counter: 0,
+    value: 0
 }
 
 export const counterReducer = (state = initialState, {type, payload}) => {
@@ -10,6 +11,11 @@ export const counterReducer = (state = initialState, {type, payload}) => {
             return {
                 ...state,
                 counter: payload
+            }
+        case CHANGE_VALUE:
+            return {
+                ...state,
+                value: payload
             }
         default:
             return state

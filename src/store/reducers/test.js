@@ -1,7 +1,7 @@
 import { CHANGE_TEST } from "../types";
 
 const initialState = {
-    test: 'initial'
+    test: "initial"
 }
 
 export const testReducer = (state = initialState, { type, payload }) => {

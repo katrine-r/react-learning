@@ -4,26 +4,22 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./component/Layout";
 import { AuthContext } from "./context";
 import RequireAuth from "./hoc/RequireAuth";
-// import About from "./pages/About";
-// import Post from "./pages/Post";
-// import Posts from "./pages/Posts";
 import SignIn from "./pages/SignIn";
 import { routes } from "./routes";
 
 function App() {
 
-  // const [isAuth, setIsAuth] = useState(false);
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
   console.log("isAuth", isAuth);
 
   const { test } = useSelector(state => state.test)
-  console.log('test', test);
+  console.log("test", test);
 
   return (
     <AuthContext.Provider value={{ isAuth, setIsAuth }}>
       <BrowserRouter>
         <Routes> 
-          <Route path='/' element={<Layout />}>
+          <Route path="/" element={<Layout />}>
           {routes.map((i) => (
               <Route
                 path={i.path}
@@ -36,12 +32,8 @@ function App() {
                 }
               />
             ))}
-            {/* <Route index element={<Posts />} />
-            <Route path='/post/:post_id' element={<Post />} />
-            <Route path='/about' element={<About />} /> */}
           </Route>
           <Route path="/signin" element={<SignIn />} />
-          {/* <Route path="*" element={<Navigate to={"/"} />} /> */}
           <Route
             path="*"
             element={<Navigate to={isAuth ? "/" : "/signin"} replace />}
