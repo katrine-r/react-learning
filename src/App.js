@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./component/Layout";
 import { AuthContext } from "./context";
@@ -14,6 +15,9 @@ function App() {
   // const [isAuth, setIsAuth] = useState(false);
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
   console.log("isAuth", isAuth);
+
+  const { test } = useSelector(state => state.test)
+  console.log('test', test);
 
   return (
     <AuthContext.Provider value={{ isAuth, setIsAuth }}>

@@ -1,1 +1,2 @@
 export const CHANGE_TEST = 'CHANGE_TEST'
+export const CHANGE_COUNTER = 'CHANGE_COUNTER'
