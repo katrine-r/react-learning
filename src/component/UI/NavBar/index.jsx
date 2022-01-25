@@ -24,6 +24,7 @@ const NavBar = () => {
                 <NavLink to='/'>Главная</NavLink>
                 <NavLink to='/about' state={{num: 1}}>Про нас</NavLink>
                 <NavLink to='/counter' >Счетчик</NavLink>
+                <NavLink to='/weather' >Погода</NavLink>
             </nav>
             <span onClick={() => dispatch(changeTest('clicked'))} >{test}</span>
             <span onClick={handleClick}>Sign out</span>
